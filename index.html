@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HandCric</title>
+</head>
+<body>
+   <center style="background-color: black;color: white;font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
+     <h1>Team A Score Board</h1>
+        <table class="table" >
+            <thead>
+              <tr>
+                <th scope="col">Play No</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Score</th>
+              </tr>
+            </thead>
+            <tbody id="playerListA">
+            </tbody>
+        </table>
+    <div>
+        <button onclick="addPlayer('A')">Add Player</button>
+        <button onclick="submitScores('A')">Submit</button>
+    </div>
+    <div>
+        <h2>Total Score A: <span id="totalScoreA">0</span></h2>
+    </div>
+   </center>
+   
+   <center style="background-color: black;color: white;font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
+    <h1>Team B Score Board</h1>
+       <table class="table" >
+           <thead>
+             <tr>
+               <th scope="col">Play No</th>
+               <th scope="col">First Name</th>
+               <th scope="col">Score</th>
+             </tr>
+           </thead>
+           <tbody id="playerListB">
+           </tbody>
+       </table>
+   <div>
+       <button onclick="addPlayer('B')">Add Player</button>
+       <button onclick="submitScores('B')">Submit</button>
+   </div>
+   <div>
+       <h2>Total Score B: <span id="totalScoreB">0</span></h2>
+   </div>
+  </center>
+    <script>
+        function addPlayer(team) {
+            var playerCount;
+            if (team === 'A') {
+                playerCount = document.querySelectorAll('#playerListA tr').length + 1;
+            } else if (team === 'B') {
+                playerCount = document.querySelectorAll('#playerListB tr').length + 1;
+            }
+            
+            var newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <th scope="row">${playerCount}</th>
+                <td><input type="text" name="playerName${team}${playerCount}" placeholder="Player Name"></td>
+                <td><input type="number" name="playerScore${team}${playerCount}" placeholder="Player Score"></td>
+            `;
+            
+            if (team === 'A') {
+                document.getElementById('playerListA').appendChild(newRow);
+            } else if (team === 'B') {
+                document.getElementById('playerListB').appendChild(newRow);
+            }
+        }
+
+        function submitScores(team) {
+            var playerData = [];
+            var totalScore = 0;
+            var playerRows;
+            
+            if (team === 'A') {
+                playerRows = document.querySelectorAll('#playerListA tr');
+            } else if (team === 'B') {
+                playerRows = document.querySelectorAll('#playerListB tr');
+            }
+            
+            playerRows.forEach(function(row) {
+                var playerName = row.querySelector('input[type="text"]').value;
+                var playerScore = parseInt(row.querySelector('input[type="number"]').value);
+                totalScore += playerScore;
+                playerData.push({ name: playerName, score: playerScore });
+            });
+            
+            console.log(playerData);
+            
+            if (team === 'A') {
+                document.getElementById('totalScoreA').textContent = totalScore;
+            } else if (team === 'B') {
+                document.getElementById('totalScoreB').textContent = totalScore;
+            }
+        }
+    </script>
+</body>
+</html>
